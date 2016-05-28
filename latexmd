@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+if test $# -ne 1; then
+	echo "Usage: $0 <file.md>"
+	exit 1
+fi
+resolved="$(readlink "$0")"
+if test $? -ne 0; then mybase="$(dirname "$0")"; else mybase="$(dirname "$resolved")"; fi
+mdfile="$1"
+filebase="$(echo "$mdfile" | sed 's/\.[^.]\+$//')"
+cat "$mdfile" | sed 's/`/\`/g' | sed 's/\$/`/g' | markdown | node "$mybase/htmltotex.js" >".$filebase.tex"
+output="$(pdflatex ".$filebase.tex" </dev/null)"
+texstatus=$?
+rm ".$filebase.aux"
+if test $texstatus -ne 0; then
+	echo "$output"
+	exit 1
+fi
+rm ".$filebase."{log,tex}
+mv ".$filebase.pdf" "$filebase.pdf"
