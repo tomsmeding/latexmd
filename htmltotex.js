@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-const fs=require("fs");
+const fs=require("fs"),
+      path=require("path");
 
 function readfile(fname){return String(fs.readFileSync(fname));}
 function writefile(fname){fs.writeFileSync(fname);}
@@ -16,7 +17,7 @@ function readstdin(cb){
 	let template=null;
 	function inlineTemplate(code){
 		if(template==null){
-			template=readfile("/Users/Tom/Documents/univ/latex-template/template.tex").split("\\begin{document}")[0]+"\\begin{document}\n\n"
+			template=readfile(path.dirname(process.argv[1])+"/template.tex");
 		}
 		return template+code+"\n\n\\end{document}\n";
 	}
