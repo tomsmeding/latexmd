@@ -122,11 +122,11 @@ function latexify(node){
 			return "\\tsection{"+joins(node.children.map(latexify),"")+"}";
 		case "ol": {
 			const lis=node.children.filter(n=>n.name=="li");
-			return "\\begin{enumerate}\n\\item "+joins(lis.map(latexify),"\\item ")+"\\end{enumerate}";
+			return "\\begin{enumerate}\n\\item{} "+joins(lis.map(latexify),"\\item{} ")+"\\end{enumerate}";
 		}
 		case "ul": {
 			const lis=node.children.filter(n=>n.name=="li");
-			return "\\begin{itemize}\n\\item "+joins(lis.map(latexify),"\\item ")+"\\end{itemize}";
+			return "\\begin{itemize}\n\\item{} "+joins(lis.map(latexify),"\\item{} ")+"\\end{itemize}";
 		}
 		case "li":
 			return joins(node.children.map(latexify),"");
